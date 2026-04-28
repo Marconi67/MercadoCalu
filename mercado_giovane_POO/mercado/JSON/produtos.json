@@ -1,0 +1,14 @@
+[
+  { "id": 1, "nome": "Abacaxi", "preco": 4.99, "categoria": "Feira" },
+  { "id": 2, "nome": "Maçã", "preco": 6.90, "categoria": "Feira" },
+  { "id": 3, "nome": "Banana", "preco": 3.50, "categoria": "Feira" },
+  { "id": 4, "nome": "Melancia", "preco": 12.99, "categoria": "Feira" },
+  { "id": 5, "nome": "Laranja", "preco": 5.49, "categoria": "Feira" },
+  { "id": 6, "nome": "Pão Francês", "preco": 0.89, "categoria": "Padaria" },
+  { "id": 7, "nome": "Bolo de Chocolate", "preco": 25.00, "categoria": "Padaria" },
+  { "id": 9, "nome": "Frango Inteiro", "preco": 22.90, "categoria": "Açougue" },
+  { "id": 10, "nome": "Picanha", "preco": 79.90, "categoria": "Açougue" },
+  { "id": 12, "nome": "Queijo Mussarela", "preco": 38.00, "categoria": "Frios" },
+  { "id": 14, "nome": "Shampoo", "preco": 18.90, "categoria": "Higiene" },
+  { "id": 16, "nome": "Detergente", "preco": 2.79, "categoria": "Limpeza" }
+]

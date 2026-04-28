@@ -1,0 +1,373 @@
+/* ============================================
+   SUPERMERCADO GIOVANE - Panfleto / Loja
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --vermelho: #a3001c;
+  --vermelho-escuro: #6b0f1a;
+  --amarelo: #ffd27a;
+  --amarelo-forte: #ffcc00;
+  --cinza-claro: #f9f9f9;
+  --branco: #ffffff;
+  --texto: #1a1a1a;
+  --sombra: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(150deg, var(--amarelo) 0%, #f46b6b 55%, var(--vermelho-escuro) 100%);
+  font-family: 'Nunito', sans-serif;
+}
+
+/* ---- Navbar ---- */
+#superior {
+  background: var(--branco);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  padding: 0 40px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#superior .logo-nav {
+  height: 50px;
+  width: auto;
+}
+
+.nav-busca {
+  display: flex;
+  align-items: center;
+  background: var(--cinza-claro);
+  border-radius: 30px;
+  padding: 8px 16px;
+  gap: 8px;
+  flex: 1;
+  max-width: 380px;
+  margin: 0 30px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.nav-busca:focus-within { border-color: var(--vermelho); }
+
+.nav-busca input {
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-family: 'Nunito', sans-serif;
+  width: 100%;
+  outline: none;
+}
+
+.nav-busca button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--texto);
+  font-weight: 700;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--vermelho); }
+
+.btn-carrinho {
+  position: relative;
+  background: var(--vermelho);
+  color: #fff !important;
+  padding: 9px 18px;
+  border-radius: 20px;
+  font-weight: 800 !important;
+}
+
+.btn-carrinho:hover { background: var(--vermelho-escuro); color: #fff !important; }
+
+#carrinho-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--amarelo-forte);
+  color: var(--texto);
+  font-size: 11px;
+  font-weight: 800;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Categorias ---- */
+#categorias {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  padding: 12px 40px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.cat-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.cat-btn:hover, .cat-btn.ativo {
+  background: var(--branco);
+  color: var(--vermelho);
+  border-color: var(--branco);
+}
+
+/* ---- Grid de Produtos ---- */
+#conteiner-principal {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+#titulo-categoria {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+#grid-produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* ---- Card de produto ---- */
+.card-produto {
+  background: var(--branco);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  animation: aparecer 0.35s ease both;
+}
+
+.card-produto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-produto img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: var(--cinza-claro);
+}
+
+.card-produto-info {
+  padding: 14px;
+}
+
+.card-produto-info h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--texto);
+  margin-bottom: 4px;
+}
+
+.card-produto-info .categoria-tag {
+  font-size: 11px;
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.card-produto-info .preco {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: var(--vermelho);
+  letter-spacing: 1px;
+}
+
+.btn-adicionar {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: var(--vermelho);
+  color: #fff;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-adicionar:hover { background: var(--vermelho-escuro); }
+
+/* ---- Carrinho (página) ---- */
+.pagina-carrinho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(150deg, var(--amarelo) 0%, #f46b6b 55%, var(--vermelho-escuro) 100%);
+  padding-top: 72px;
+}
+
+.carrinho-container {
+  max-width: 700px;
+  width: 100%;
+  margin: 40px 20px;
+}
+
+.carrinho-container h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.item-carrinho {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--sombra);
+}
+
+.item-carrinho img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: var(--cinza-claro);
+}
+
+.item-info { flex: 1; }
+.item-info h4 { font-size: 16px; font-weight: 800; color: var(--texto); }
+.item-info .item-preco { color: var(--vermelho); font-weight: 700; font-size: 15px; }
+
+.item-qtd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.item-qtd button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--vermelho);
+  background: #fff;
+  color: var(--vermelho);
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.item-qtd button:hover { background: var(--vermelho); color: #fff; }
+.item-qtd span { font-weight: 800; font-size: 16px; min-width: 20px; text-align: center; }
+
+.btn-remover {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.btn-remover:hover { color: var(--vermelho); }
+
+.carrinho-total {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--sombra);
+}
+
+.carrinho-total .total-label { font-size: 20px; font-weight: 800; color: var(--texto); }
+.carrinho-total .total-valor {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  color: var(--vermelho);
+}
+
+.btn-finalizar {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: var(--vermelho);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.2s;
+}
+
+.btn-finalizar:hover { background: var(--vermelho-escuro); }
+
+.carrinho-vazio {
+  text-align: center;
+  color: rgba(255,255,255,0.85);
+  padding: 60px 0;
+}
+
+.carrinho-vazio .icone { font-size: 64px; margin-bottom: 16px; }
+.carrinho-vazio h3 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

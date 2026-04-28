@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Supermercado Giovane</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="card">
+    <img src="../imagens/Design sem nome.png" alt="Logo" class="logo">
+    <h2>Faça seu Login</h2>
+
+    <div class="mensagem-erro" id="msg-erro"></div>
+    <div class="mensagem-sucesso" id="msg-sucesso"></div>
+
+    <div class="campo">
+      <label>Email ou usuário</label>
+      <input type="text" id="campo-login" placeholder="seu@email.com">
+    </div>
+    <div class="campo">
+      <label>Senha</label>
+      <input type="password" id="campo-senha" placeholder="••••••••">
+    </div>
+
+    <button class="btn-primario" onclick="fazerLogin()">Entrar</button>
+
+    <span class="link-alternativo">
+      Não tem conta? <a href="cadastro.html">Cadastre-se</a>
+    </span>
+    <span class="link-alternativo" style="margin-top:8px">
+      <a href="panfleto.html">← Voltar à loja</a>
+    </span>
+  </div>
+
+  <script src="../JS/app.js"></script>
+  <script>
+    // Redirecionar se já logado
+    if (gerenciadorUsuarios.usuarioLogado()) {
+      window.location.href = 'panfleto.html';
+    }
+
+    function fazerLogin() {
+      const loginInput = document.getElementById('campo-login').value.trim();
+      const senhaInput = document.getElementById('campo-senha').value.trim();
+      const msgErro = document.getElementById('msg-erro');
+      const msgSucesso = document.getElementById('msg-sucesso');
+
+      msgErro.style.display = 'none';
+      msgSucesso.style.display = 'none';
+
+      try {
+        const usuario = gerenciadorUsuarios.login(loginInput, senhaInput);
+        msgSucesso.textContent = `Bem-vindo(a), ${usuario.nome}! Redirecionando...`;
+        msgSucesso.style.display = 'block';
+        setTimeout(() => window.location.href = 'panfleto.html', 1200);
+      } catch (e) {
+        msgErro.textContent = e.message;
+        msgErro.style.display = 'block';
+      }
+    }
+
+    // Login ao pressionar Enter
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') fazerLogin();
+    });
+  </script>
+</body>
+</html>

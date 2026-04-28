@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho - Supermercado Giovane</title>
+  <link rel="stylesheet" href="../css/panfleto.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="superior">
+    <img src="../imagens/Design sem nome.png" alt="Logo" class="logo-nav">
+    <div class="nav-busca" style="pointer-events:none;opacity:0.4;">
+      <input type="search" placeholder="Buscar produtos...">
+    </div>
+    <div class="nav-links">
+      <a href="login.html" id="link-login">Entrar</a>
+      <a href="cadastro.html" id="link-cadastro">Cadastrar</a>
+      <a href="#" id="link-usuario" style="display:none"></a>
+      <a href="carrinho.html" class="btn-carrinho">
+        🛒 Carrinho
+        <span id="carrinho-badge">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <div style="background:linear-gradient(150deg,#ffd27a 0%,#f46b6b 55%,#6b0f1a 100%);min-height:calc(100vh - 72px);padding:40px 20px 60px;">
+    <div class="carrinho-container" style="max-width:700px;margin:0 auto;">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:#fff;letter-spacing:2px;margin-bottom:24px;">
+        🛒 Meu Carrinho
+      </h2>
+
+      <div id="lista-carrinho"></div>
+
+      <div id="rodape-carrinho" style="display:none;">
+        <div class="carrinho-total">
+          <span class="total-label">Total</span>
+          <span class="total-valor" id="total-valor"></span>
+        </div>
+        <button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+        <button onclick="limparCarrinho()" style="
+          display:block;width:100%;padding:12px;background:transparent;color:rgba(255,255,255,0.8);
+          border:2px solid rgba(255,255,255,0.5);border-radius:14px;font-family:'Nunito',sans-serif;
+          font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;transition:all 0.2s;
+        " onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+           onmouseout="this.style.background='transparent'">
+          Limpar carrinho
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../JS/app.js"></script>
+  <script>
+    function renderizarCarrinho() {
+      const lista = document.getElementById('lista-carrinho');
+      const rodape = document.getElementById('rodape-carrinho');
+      const totalEl = document.getElementById('total-valor');
+
+      lista.innerHTML = '';
+
+      if (carrinho.itens.length === 0) {
+        lista.innerHTML = `
+          <div class="carrinho-vazio">
+            <div class="icone">🛒</div>
+            <h3>Seu carrinho está vazio</h3>
+            <p style="margin-bottom:20px;">Adicione produtos para continuar</p>
+            <a href="panfleto.html" style="
+              display:inline-block;padding:12px 28px;background:#fff;color:#a3001c;
+              border-radius:14px;font-weight:800;text-decoration:none;font-size:16px;
+            ">Ver produtos</a>
+          </div>
+        `;
+        rodape.style.display = 'none';
+        return;
+      }
+
+      carrinho.itens.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item-carrinho';
+        div.innerHTML = `
+          <img src="${item.produto.imagem}" alt="${item.produto.nome}" onerror="this.src='../imagens/1.png'">
+          <div class="item-info">
+            <h4>${item.produto.nome}</h4>
+            <div class="item-preco">${item.produto.formatarPreco()} un. · Subtotal: ${item.formatarSubtotal()}</div>
+          </div>
+          <div class="item-qtd">
+            <button onclick="alterarQtd(${item.produto.id}, ${item.quantidade - 1})">−</button>
+            <span>${item.quantidade}</span>
+            <button onclick="alterarQtd(${item.produto.id}, ${item.quantidade + 1})">+</button>
+          </div>
+          <button class="btn-remover" onclick="removerItem(${item.produto.id})" title="Remover">✕</button>
+        `;
+        lista.appendChild(div);
+      });
+
+      totalEl.textContent = carrinho.formatarTotal();
+      rodape.style.display = 'block';
+    }
+
+    function alterarQtd(id, qtd) {
+      carrinho.alterarQuantidade(id, qtd);
+      renderizarCarrinho();
+    }
+
+    function removerItem(id) {
+      carrinho.removerProduto(id);
+      renderizarCarrinho();
+    }
+
+    function limparCarrinho() {
+      if (confirm('Tem certeza que deseja limpar o carrinho?')) {
+        carrinho.limpar();
+        renderizarCarrinho();
+      }
+    }
+
+    function finalizarCompra() {
+      const logado = gerenciadorUsuarios.usuarioLogado();
+      if (!logado) {
+        alert('Faça login para finalizar a compra!');
+        window.location.href = 'login.html';
+        return;
+      }
+      alert(`Compra finalizada com sucesso!\nTotal: ${carrinho.formatarTotal()}\nObrigado, ${logado.nome}! 🎉`);
+      carrinho.limpar();
+      renderizarCarrinho();
+    }
+
+    atualizarNavUsuario();
+    renderizarCarrinho();
+  </script>
+</body>
+</html>

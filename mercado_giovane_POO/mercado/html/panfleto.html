@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supermercado Giovane</title>
+  <link rel="stylesheet" href="../css/panfleto.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="superior">
+    <img src="../imagens/Design sem nome.png" alt="Logo" class="logo-nav">
+
+    <div class="nav-busca">
+      <input type="search" id="input-busca" placeholder="Buscar produtos...">
+      <button onclick="buscarProdutos()">🔍</button>
+    </div>
+
+    <div class="nav-links">
+      <a href="login.html" id="link-login">Entrar</a>
+      <a href="cadastro.html" id="link-cadastro">Cadastrar</a>
+      <a href="#" id="link-usuario" onclick="fazerLogout()" style="display:none"></a>
+      <a href="carrinho.html" class="btn-carrinho">
+        🛒 Carrinho
+        <span id="carrinho-badge">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- CATEGORIAS -->
+  <div id="categorias"></div>
+
+  <!-- PRODUTOS -->
+  <div id="conteiner-principal">
+    <h2 id="titulo-categoria">Todos os produtos</h2>
+    <div id="grid-produtos"></div>
+  </div>
+
+  <script src="../JS/app.js"></script>
+  <script>
+    // ---- Renderizar categorias ----
+    function renderizarCategorias(ativa = 'Todos') {
+      const container = document.getElementById('categorias');
+      container.innerHTML = '';
+      catalogo.categorias.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-btn' + (cat === ativa ? ' ativo' : '');
+        btn.textContent = cat;
+        btn.onclick = () => renderizarProdutos(cat);
+        container.appendChild(btn);
+      });
+    }
+
+    // ---- Renderizar produtos ----
+    function renderizarProdutos(categoria = 'Todos') {
+      const grid = document.getElementById('grid-produtos');
+      const titulo = document.getElementById('titulo-categoria');
+      const produtos = catalogo.filtrarPorCategoria(categoria);
+      titulo.textContent = categoria === 'Todos' ? 'Todos os produtos' : categoria;
+      renderizarCategorias(categoria);
+
+      grid.innerHTML = '';
+      if (produtos.length === 0) {
+        grid.innerHTML = '<p style="color:#fff;font-size:18px;font-weight:700;">Nenhum produto encontrado.</p>';
+        return;
+      }
+      produtos.forEach((produto, i) => {
+        const card = document.createElement('div');
+        card.className = 'card-produto';
+        card.style.animationDelay = `${i * 0.05}s`;
+        card.innerHTML = `
+          <img src="${produto.imagem}" alt="${produto.nome}" onerror="this.src='../imagens/1.png'">
+          <div class="card-produto-info">
+            <h3>${produto.nome}</h3>
+            <div class="categoria-tag">${produto.categoria}</div>
+            <div class="preco">${produto.formatarPreco()}</div>
+          </div>
+          <button class="btn-adicionar" onclick="adicionarAoCarrinho(${produto.id})">+ Adicionar</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function adicionarAoCarrinho(produtoId) {
+      const produto = catalogo.produtos.find(p => p.id === produtoId);
+      if (produto) carrinho.adicionarProduto(produto);
+    }
+
+    function buscarProdutos() {
+      const termo = document.getElementById('input-busca').value.trim();
+      const titulo = document.getElementById('titulo-categoria');
+      const grid = document.getElementById('grid-produtos');
+      renderizarCategorias();
+      if (!termo) { renderizarProdutos(); return; }
+      const resultado = catalogo.buscar(termo);
+      titulo.textContent = `Busca: "${termo}"`;
+      grid.innerHTML = '';
+      if (resultado.length === 0) {
+        grid.innerHTML = '<p style="color:#fff;font-size:18px;font-weight:700;">Nenhum produto encontrado.</p>';
+        return;
+      }
+      resultado.forEach((produto, i) => {
+        const card = document.createElement('div');
+        card.className = 'card-produto';
+        card.style.animationDelay = `${i * 0.05}s`;
+        card.innerHTML = `
+          <img src="${produto.imagem}" alt="${produto.nome}" onerror="this.src='../imagens/1.png'">
+          <div class="card-produto-info">
+            <h3>${produto.nome}</h3>
+            <div class="categoria-tag">${produto.categoria}</div>
+            <div class="preco">${produto.formatarPreco()}</div>
+          </div>
+          <button class="btn-adicionar" onclick="adicionarAoCarrinho(${produto.id})">+ Adicionar</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function fazerLogout() {
+      gerenciadorUsuarios.logout();
+      atualizarNavUsuario();
+      location.reload();
+    }
+
+    // ---- Busca ao pressionar Enter ----
+    document.getElementById('input-busca').addEventListener('keydown', e => {
+      if (e.key === 'Enter') buscarProdutos();
+    });
+
+    // ---- Inicializar ----
+    renderizarProdutos();
+    atualizarNavUsuario();
+  </script>
+</body>
+</html>
